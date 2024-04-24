@@ -14,17 +14,7 @@ resource "aws_s3_bucket_website_configuration" "mkdocs_website" {
   }
 }
 
-resource "aws_s3_bucket_ownership_controls" "mkdocs_ownership_controls" {
-  bucket = aws_s3_bucket.mkdocs_bucket.id
-
-  rule {
-    object_ownership = "BucketOwnerPreferred"
-  }
-}
-
 resource "aws_s3_bucket_acl" "mkdocs_acl" {
-  depends_on = [aws_s3_bucket_ownership_controls.mkdocs_ownership_controls]
-
   bucket = aws_s3_bucket.mkdocs_bucket.id
   acl    = "public-read"
 }
