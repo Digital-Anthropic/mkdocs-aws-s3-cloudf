@@ -14,11 +14,6 @@ resource "aws_s3_bucket_website_configuration" "mkdocs_website" {
   }
 }
 
-resource "aws_s3_bucket_acl" "mkdocs_acl" {
-  bucket = aws_s3_bucket.mkdocs_bucket.id
-  acl    = "public-read"
-}
-
 resource "aws_cloudfront_distribution" "mkdocs_distribution" {
   origin {
     domain_name = aws_s3_bucket.mkdocs_bucket.bucket_regional_domain_name
