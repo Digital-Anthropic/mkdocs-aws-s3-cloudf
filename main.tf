@@ -1,7 +1,7 @@
 module "mkdocs" {
   source                = "./terraform-mkdocs-module"
-  bucket_name           = "your-bucket-name"
-  cloudfront_price_class = "PriceClass_100"
+  bucket_name           = var.bucket_name
+  cloudfront_price_class = var.cloudfront_price_class
 }
 
 output "bucket_endpoint" {
