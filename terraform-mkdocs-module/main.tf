@@ -2,6 +2,30 @@ resource "aws_s3_bucket" "mkdocs_bucket" {
   bucket = var.bucket_name
 }
 
+resource "aws_s3_bucket_policy" "allow_access_from_cloudfront" {
+  bucket = aws_s3_bucket.mkdocs_bucket.id
+
+  policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect    = "Allow",
+        Principal = {
+          AWS = "arn:aws:iam::cloudfront:user/CloudFront Origin Access Identity ${aws_cloudfront_origin_access_identity.access_identity.id}"
+        },
+        Action    = [
+          "s3:GetObject",
+          "s3:ListBucket",
+        ],
+        Resource  = [
+          aws_s3_bucket.mkdocs_bucket.arn,
+          "${aws_s3_bucket.mkdocs_bucket.arn}/*",
+        ]
+      }
+    ]
+  })
+}
+
 resource "aws_s3_bucket_website_configuration" "mkdocs_website" {
   bucket = aws_s3_bucket.mkdocs_bucket.id
 
@@ -14,13 +38,17 @@ resource "aws_s3_bucket_website_configuration" "mkdocs_website" {
   }
 }
 
+resource "aws_cloudfront_origin_access_identity" "access_identity" {
+  comment = "OAI"
+}
+
 resource "aws_cloudfront_distribution" "mkdocs_distribution" {
   origin {
     domain_name = aws_s3_bucket.mkdocs_bucket.bucket_regional_domain_name
     origin_id   = "S3Origin"
 
     s3_origin_config {
-      origin_access_identity = ""
+      origin_access_identity = aws_cloudfront_origin_access_identity.access_identity.cloudfront_access_identity_path
     }
   }
 
