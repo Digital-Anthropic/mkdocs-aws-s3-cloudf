@@ -1,3 +1,7 @@
+provider "aws" {
+  alias  = "aws_cloudfront"
+}
+
 resource "aws_s3_bucket" "mkdocs_bucket" {
   bucket = var.bucket_name
 }
@@ -26,10 +30,16 @@ resource "aws_s3_bucket_policy" "allow_access_from_cloudfront" {
   })
 }
 
-resource "aws_s3_bucket_website" "mkdocs_website" {
+resource "aws_s3_bucket_website_configuration" "mkdocs_website" {
   bucket = aws_s3_bucket.mkdocs_bucket.id
-  index_document = "index.html"
-  error_document = "error.html"
+
+  index_document {
+    suffix = "index.html"
+  }
+
+  error_document {
+    key = "error.html"
+  }
 }
 
 resource "aws_cloudfront_origin_access_identity" "access_identity" {
@@ -58,7 +68,7 @@ resource "aws_cloudfront_distribution" "mkdocs_distribution" {
 
     lambda_function_association {
       event_type   = "origin-request"
-      lambda_arn   = aws_lambda_function.folder_index_redirect.qualified_arn
+      lambda_arn   = aws_lambda_function.index_redirect.qualified_arn
       include_body = false
     }
 
