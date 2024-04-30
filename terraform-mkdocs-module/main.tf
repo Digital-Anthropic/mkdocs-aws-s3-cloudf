@@ -1,7 +1,3 @@
-provider "aws" {
-  alias  = "aws_cloudfront"
-}
-
 resource "aws_s3_bucket" "mkdocs_bucket" {
   bucket = var.bucket_name
 }
