@@ -42,12 +42,27 @@ resource "aws_cloudfront_origin_access_identity" "access_identity" {
   comment = "OAI"
 }
 
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
+}
+
+resource "aws_iam_role" "iam_for_lambda" {
+  name               = "iam_for_lambda"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
 resource "aws_lambda_function" "append_index_html" {
-  filename         = "append_index_html.zip"
   function_name    = "AppendIndexHtmlLambda"
-  role             = aws_iam_role.lambda_role.arn
-  handler          = "index.handler"
-  runtime          = "nodejs14.x"
+  role             = aws_iam_role.iam_for_lambda.arn
 }
 
 resource "aws_lambda_permission" "cloudfront_invoke_permission" {
@@ -96,7 +111,7 @@ resource "aws_cloudfront_distribution" "mkdocs_distribution" {
 
   lambda_function_association {
     event_type   = "origin-request"
-    lambda_arn   = aws_cloudfront_function.append_index_html_function.qualified_arn
+    lambda_arn   = aws_cloudfront_function.append_index_html_function.arn
     include_body = false
   }
     forwarded_values {
