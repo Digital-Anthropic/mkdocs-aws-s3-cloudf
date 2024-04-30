@@ -61,9 +61,12 @@ resource "aws_iam_role" "iam_for_lambda" {
 }
 
 resource "aws_lambda_function" "append_index_html" {
+  s3_bucket     = "arn:aws:s3:::mkdocs-bucket" 
   filename         = "lambda.zip"
   function_name    = "AppendIndexHtmlLambda"
   role             = aws_iam_role.iam_for_lambda.arn
+  handler       = "index.handler"
+  runtime       = "nodejs14.x"
 }
 
 resource "aws_lambda_permission" "cloudfront_invoke_permission" {
