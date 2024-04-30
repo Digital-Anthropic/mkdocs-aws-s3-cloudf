@@ -26,16 +26,10 @@ resource "aws_s3_bucket_policy" "allow_access_from_cloudfront" {
   })
 }
 
-resource "aws_s3_bucket_website_configuration" "mkdocs_website" {
+resource "aws_s3_bucket_website" "mkdocs_website" {
   bucket = aws_s3_bucket.mkdocs_bucket.id
-
-  index_document {
-    suffix = "index.html"
-  }
-
-  error_document {
-    key = "error.html"
-  }
+  index_document = "index.html"
+  error_document = "error.html"
 }
 
 resource "aws_cloudfront_origin_access_identity" "access_identity" {
