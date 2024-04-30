@@ -1,3 +1,7 @@
+provider "aws" {
+  alias  = "aws_cloudfront"
+}
+
 resource "aws_s3_bucket" "mkdocs_bucket" {
   bucket = var.bucket_name
 }
@@ -61,6 +65,12 @@ resource "aws_cloudfront_distribution" "mkdocs_distribution" {
     allowed_methods  = ["GET", "HEAD", "OPTIONS"]
     cached_methods   = ["GET", "HEAD", "OPTIONS"]
     target_origin_id = "S3Origin"
+
+    lambda_function_association {
+      event_type   = "origin-request"
+      lambda_arn   = aws_lambda_function.index_redirect.qualified_arn
+      include_body = false
+    }
 
     forwarded_values {
       query_string = false
