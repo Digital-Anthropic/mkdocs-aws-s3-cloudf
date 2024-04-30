@@ -61,6 +61,7 @@ resource "aws_iam_role" "iam_for_lambda" {
 }
 
 resource "aws_lambda_function" "append_index_html" {
+  s3_bucket = aws_s3_bucket.mkdocs_bucket.arn
   function_name    = "AppendIndexHtmlLambda"
   role             = aws_iam_role.iam_for_lambda.arn
 }
