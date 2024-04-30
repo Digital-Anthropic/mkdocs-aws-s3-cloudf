@@ -42,56 +42,6 @@ resource "aws_cloudfront_origin_access_identity" "access_identity" {
   comment = "OAI"
 }
 
-data "aws_iam_policy_document" "assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["lambda.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
-resource "aws_iam_role" "iam_for_lambda" {
-  name               = "iam_for_lambda"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
-}
-
-resource "aws_lambda_function" "append_index_html" {
-  filename         = "lambda.zip"
-  function_name    = "AppendIndexHtmlLambda"
-  role             = aws_iam_role.iam_for_lambda.arn
-  handler       = "index.handler"
-  runtime       = "nodejs14.x"
-}
-
-resource "aws_lambda_permission" "cloudfront_invoke_permission" {
-  statement_id  = "AllowExecutionFromCloudFront"
-  action        = "lambda:InvokeFunction"
-  function_name = aws_lambda_function.append_index_html.arn
-  principal     = "edgelambda.amazonaws.com"
-}
-
-resource "aws_cloudfront_function" "append_index_html_function" {
-  name    = "append_index_html"
-  runtime = "cloudfront-js-2.0"
-
-  code = <<-EOT
-    function handler(event) {
-      const request = event.request;
-      const uri = request.uri;
-
-      // Append "index.html" to the request path
-      request.uri = uri.endsWith("/") ? uri + "index.html" : uri;
-
-      return request;
-    }
-  EOT
-}
-
 resource "aws_cloudfront_distribution" "mkdocs_distribution" {
   origin {
     domain_name = aws_s3_bucket.mkdocs_bucket.bucket_regional_domain_name
