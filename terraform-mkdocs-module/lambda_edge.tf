@@ -50,13 +50,18 @@ EOF
 
 }
 
+provider "aws" {
+  region = "us-east-1"
+  alias = "aws_us"
+}
+
 resource "aws_lambda_function" "index_redirect" {
   description      = "Managed by Terraform"
   filename         = "terraform-mkdocs-module/index_redirect.js.zip"
   function_name    = "folder-index-redirect"
   handler          = "index_redirect.handler"
   source_code_hash = data.archive_file.index_redirect_zip.output_base64sha256
-  provider         = "us-east-1"
+  provider         = aws.aws_us
   publish          = true
   role             = aws_iam_role.lambda_execution.arn
   runtime          = "nodejs20.x"
