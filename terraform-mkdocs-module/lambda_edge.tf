@@ -56,7 +56,7 @@ resource "aws_lambda_function" "index_redirect" {
   function_name    = "folder-index-redirect"
   handler          = "index_redirect.handler"
   source_code_hash = data.archive_file.index_redirect_zip.output_base64sha256
-  provider         = aws.aws_cloudfront
+  provider         = "us-east-1"
   publish          = true
   role             = aws_iam_role.lambda_execution.arn
   runtime          = "nodejs20.x"
