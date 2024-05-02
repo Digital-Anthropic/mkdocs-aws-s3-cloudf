@@ -1,4 +1,4 @@
-module "mkdocs" {
+module "terraform-s3-cloudfront-lambda" {
   source                = "./terraform-mkdocs-module"
   bucket_name           = var.bucket_name
   cloudfront_price_class = var.cloudfront_price_class
