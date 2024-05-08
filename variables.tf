@@ -1,7 +1,7 @@
 variable "bucket_name" {
   type = string
   description = "bucket name"
-  default = "terraform-modules-docs"
+  default = "mkdocs-bucket"
 }
 
 variable "cloudfront_price_class" {
