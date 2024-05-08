@@ -1,7 +1,7 @@
 data "archive_file" "index_redirect_zip" {
   type        = "zip"
-  output_path = "terraform-mkdocs-module/index_redirect.js.zip"
-  source_file = "terraform-mkdocs-module/index_redirect.js"
+  output_path = "lambda-module/index_redirect.js.zip"
+  source_file = "lambda-module/index_redirect.js"
 }
 
 resource "aws_iam_role_policy" "lambda_execution" {
@@ -57,7 +57,7 @@ provider "aws" {
 
 resource "aws_lambda_function" "index_redirect" {
   description      = "Managed by Terraform"
-  filename         = "terraform-mkdocs-module/index_redirect.js.zip"
+  filename         = "lambda-module/index_redirect.js.zip"
   function_name    = "folder-index-redirect"
   handler          = "index_redirect.handler"
   source_code_hash = data.archive_file.index_redirect_zip.output_base64sha256
