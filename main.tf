@@ -17,13 +17,13 @@ module "lambda_edge" {
 
 output "bucket_endpoints" {
   value = {
-    for key, value in module.terraform_s3_cloudfront_lambda_func : key => value.bucket_endpoint
+    for key, value in local.terraform_s3_cloudfront_lambda_func : key => value.bucket_endpoint
   }
 }
 
 output "cloudfront_domain_names" {
   value = {
-    for key, value in module.terraform_s3_cloudfront_lambda_func : key => value.cloudfront_domain_name
+    for key, value in local.terraform_s3_cloudfront_lambda_func : key => value.cloudfront_domain_name
   }
 }
 
