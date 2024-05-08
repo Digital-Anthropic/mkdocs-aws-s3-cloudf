@@ -7,7 +7,6 @@ module "terraform_s3_cloudfront_lambda_func" {
       lambda_arn = module.lambda_edge.lambda_arn
     }
   }
-  depends_on = [module.lambda_edge]
 }
 
 module "lambda_edge" {
