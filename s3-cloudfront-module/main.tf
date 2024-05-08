@@ -43,6 +43,7 @@ resource "aws_cloudfront_origin_access_identity" "access_identity" {
 }
 
 resource "aws_cloudfront_distribution" "mkdocs_distribution" {
+  for_each = var.lambda-arn
   origin {
     domain_name = aws_s3_bucket.mkdocs_bucket.bucket_regional_domain_name
     origin_id   = "S3Origin"
@@ -64,7 +65,7 @@ resource "aws_cloudfront_distribution" "mkdocs_distribution" {
 
     lambda_function_association {
       event_type   = "origin-request"
-      lambda_arn   = aws_lambda_function.index_redirect.qualified_arn
+      lambda_arn   = each.value.lambda_arn
       include_body = false
     }
 
