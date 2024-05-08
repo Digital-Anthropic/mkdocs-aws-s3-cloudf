@@ -1,6 +1,7 @@
 module "terraform_s3_cloudfront_lambda_func" {
+  for_each              = local.s3cf
   source                = "./terraform-mkdocs-module"
-  bucket_name           = var.bucket_name 
+  bucket_name           = each.value.bucket_name 
   cloudfront_price_class = var.cloudfront_price_class
 }
 
