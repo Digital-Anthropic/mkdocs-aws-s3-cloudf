@@ -4,5 +4,10 @@ locals {
       bucket_name               = "mkdocs-bucket"
 
     }
+    
+    "mkdocs-bucket-2" = {
+      bucket_name               = "mkdocs-bucket-2"
+
+    }
 }
 }
