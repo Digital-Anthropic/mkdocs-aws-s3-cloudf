@@ -4,10 +4,5 @@ locals {
       bucket_name               = "mkdocs-bucket"
 
     }
-    
-    "modules-bucket" = {
-      bucket_name               = "modules-bucket"
-
-    }
 }
 }
