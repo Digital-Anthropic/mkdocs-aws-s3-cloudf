@@ -1,6 +1,6 @@
 module "terraform_s3_cloudfront_lambda_func" {
   source                = "./terraform-mkdocs-module"
-  bucket_name           = var.bucket_name
+  bucket_name           = var.bucket_name 
   cloudfront_price_class = var.cloudfront_price_class
 }
 
