@@ -16,11 +16,11 @@ module "lambda_edge" {
 }
 
 output "bucket_endpoint" {
-  value = module.terraform_s3_cloudfront_lambda_func.bucket_endpoint
+  value = module.terraform_s3_cloudfront_lambda_func["mkdocs-bucket"].bucket_endpoint
 }
 
 output "cloudfront_domain_name" {
-  value = module.terraform_s3_cloudfront_lambda_func.cloudfront_domain_name
+  value = module.terraform_s3_cloudfront_lambda_func["mkdocs-bucket"].cloudfront_domain_name
 }
 
 moved {
