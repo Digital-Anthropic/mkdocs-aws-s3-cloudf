@@ -5,8 +5,8 @@ locals {
 
     }
     
-    "mkdocs-bucket-2" = {
-      bucket_name               = "mkdocs-bucket-2"
+    "modules-bucket" = {
+      bucket_name               = "modules-bucket"
 
     }
 }

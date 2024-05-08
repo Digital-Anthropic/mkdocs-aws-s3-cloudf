@@ -15,12 +15,16 @@ module "lambda_edge" {
   source                = "./lambda-module"
 }
 
-output "bucket_endpoint" {
-  value = module.terraform_s3_cloudfront_lambda_func["mkdocs-bucket"].bucket_endpoint
+output "bucket_endpoints" {
+  value = {
+    for key, value in module.terraform_s3_cloudfront_lambda_func : key => value.bucket_endpoint
+  }
 }
 
-output "cloudfront_domain_name" {
-  value = module.terraform_s3_cloudfront_lambda_func["mkdocs-bucket"].cloudfront_domain_name
+output "cloudfront_domain_names" {
+  value = {
+    for key, value in module.terraform_s3_cloudfront_lambda_func : key => value.cloudfront_domain_name
+  }
 }
 
 moved {
