@@ -1,7 +1,16 @@
 module "terraform_s3_cloudfront_lambda_func" {
-  source                = "./terraform-mkdocs-module"
-  bucket_name           = var.bucket_name
+  source                = "./s3-cloudfront-module"
+  bucket_name           = var.bucket_name 
   cloudfront_price_class = var.cloudfront_price_class
+  lambda-arn = {
+    "lambda-arn" = {
+      lambda_arn = module.lambda_edge.lambda_arn
+    }
+  }
+}
+
+module "lambda_edge" {
+  source                = "./lambda-module"
 }
 
 output "bucket_endpoint" {

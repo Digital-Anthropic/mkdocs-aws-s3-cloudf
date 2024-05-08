@@ -9,3 +9,9 @@ variable "cloudfront_price_class" {
   description = "cloudfront price class"
   default = "PriceClass_100"
 }
+
+variable "lambda-arn" {
+  type = map(object({
+    lambda_arn = any
+  }))
+}

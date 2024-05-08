@@ -4,6 +4,5 @@ output "bucket_endpoint" {
 }
 
 output "cloudfront_domain_name" {
-  value       = aws_cloudfront_distribution.mkdocs_distribution.domain_name
-  description = "The domain name of the CloudFront distribution"
+  value       = aws_cloudfront_distribution.mkdocs_distribution["lambda-arn"].domain_name
 }
