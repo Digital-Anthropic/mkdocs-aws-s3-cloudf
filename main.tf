@@ -24,6 +24,6 @@ output "cloudfront_domain_name" {
 }
 
 moved {
-  from = module.mkdocs
-  to = module.terraform_s3_cloudfront_lambda_func
+  from = module.terraform_s3_cloudfront_lambda_func
+  to = module.terraform_s3_cloudfront_lambda_func["mkdocs-bucket"]
 }
